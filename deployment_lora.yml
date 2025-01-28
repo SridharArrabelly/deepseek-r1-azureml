@@ -1,0 +1,39 @@
+$schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
+name: deepseek-r1-distill-blue
+endpoint_name: deepseek-r1-endpoint-v1
+model: azureml:deepseek-r1-distill-v1:1
+model_mount_path: /models
+environment_variables:
+    MODEL_NAME: deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
+    MODEL_PATH: /models/outputs # replace with your model's folder name 
+    VLLM_ARGS: "--enable-lora --lora-modules deepseek-adapter=/models/outputs"
+    HUGGING_FACE_HUB_TOKEN: # Add your HF API key here    
+environment:
+    image: [YOUR IMAGE]  # Replace with your own image
+    inference_config:
+        liveness_route:
+            port: 8000
+            path: /health
+        readiness_route:
+            port: 8000
+            path: /health
+        scoring_route:
+            port: 8000
+            path: /
+instance_type: Standard_NC24ads_A100_v4
+instance_count: 1
+request_settings:
+    request_timeout_ms: 10000
+    max_concurrent_requests_per_instance: 4
+liveness_probe:
+    initial_delay: 10
+    period: 10
+    timeout: 2
+    success_threshold: 1
+    failure_threshold: 30
+readiness_probe:
+    initial_delay: 120
+    period: 10
+    timeout: 2
+    success_threshold: 1
+    failure_threshold: 30
