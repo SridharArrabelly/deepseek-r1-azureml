@@ -2,9 +2,9 @@
 
 This is a simple example of how to serve a DeepSeek model with Azure ML.
 
-
 ## How to get started
 
+### If you are using Azure ML Studio
 1. Create your compute instance. For code development, we recommend `Standard_DS11_v2` (2 cores, 14GB RAM, 28GB storage, No GPUs).
 2. Open the terminal of the CI and run:
     ```shell
@@ -13,10 +13,23 @@ This is a simple example of how to serve a DeepSeek model with Azure ML.
     pip install -r requirements.txt
     ```
 3. Modify the **`config.yml`** file with your Azure ML workspace information.
-4. Run the notebook **`deepseek_aml_serving_vllm.ipynb`** to deploy it to Azure ML.
+4. You can deploy the model to Azure ML using vLLM or SGLang.
+- **vLLM**: Run the notebook **`deepseek_aml_serving_vllm.ipynb`**
+- **SGLang**: Run the notebook **`deepseek_aml_serving_sglang.ipynb`**
+
+
+### If you are using your own local environment
+1. Open the terminal of the CI and run:
+    ```shell
+    git clone https://github.com/daekeun-ml/deepseek-r1-azureml.git
+    pip install -r requirements.txt
+    ```
+2. Modify the **`config.yml`** file with your Azure ML workspace information.
+3. You can deploy the model to Azure ML using vLLM or SGLang.
+- **vLLM**: Run the notebook **`deepseek_aml_serving_vllm.ipynb`**
+- **SGLang**: Run the notebook **`deepseek_aml_serving_sglang.ipynb`**
 
 ## References
-
 
 ## Requirements
 Before starting, you should meet the following requirements:
@@ -27,10 +40,7 @@ Before starting, you should meet the following requirements:
 
 - ***[Compute instance - for code development]*** A low-end instance without GPU is recommended: **[Standard_E2as_v4] (AMD 2 cores, 16GB RAM, 32GB storage) or **[Standard_DS11_v2]** (Intel 2 cores, 14GB RAM, 28GB storage, No GPUs)  
 - ***[Compute cluster - for SLM/LLM fine-tuning]*** A single NVIDIA A100 GPU (**[Standard_NC24ads_A100_v4]**) is recommended. If you do not have a dedicated quota or are on a tight budget, choose **[Low-priority VM]**.
-- ***[SLM/LLM deployment]*** At least 1 NVIDIA A100 GPU (**[Standard_NC24ads_A100_v4]**) is required 
-
-**Note**
-For managed online endpoints, [Azure ML reserves 20% of the quota for the deployment].[^1] If you request a given number of instances for those VM SKUs in a deployment, you must have a quota for `ceil(1.2 × number of instances requested for deployment) × number of cores for the VM SKU` available to avoid getting an error. For example, if you request 1 instances of a `Standard_NC6s_v3` VM (that comes with six cores) in a deployment, you should have a quota for 12 cores (ceil(1.2 × 1 instances) = 2, 2 × 6 cores) available.  
+- ***[SLM/LLM deployment]*** At least 1 NVIDIA A100 GPU (**[Standard_NC24ads_A100_v4]**) is required.
 
 ## License Summary
 
